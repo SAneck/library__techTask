@@ -1,0 +1,11 @@
+<div class="container">
+  <app-books-list></app-books-list>
+  <div class="books">
+    @if ((onMainPage$ | async) ) {
+    <button mat-raised-button color="primary" [routerLink]="'/'">
+      Создать книгу
+    </button>
+    }
+    <router-outlet></router-outlet>
+  </div>
+</div>

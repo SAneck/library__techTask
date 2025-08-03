@@ -1,0 +1,20 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="simple-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Имя автора</mat-label>
+        <input matInput formControlName="author">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Название книги</mat-label>
+        <input matInput formControlName="title">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Описание</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="form.invalid">
+        Добавить
+      </button>
+    </form>

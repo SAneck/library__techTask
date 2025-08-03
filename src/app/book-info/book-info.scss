@@ -1,0 +1,30 @@
+.book-card {
+  max-width: 600px;
+  margin: 16px auto;
+  
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+  
+  mat-card-title {
+    font-size: 24px;
+    font-weight: 500;
+  }
+  
+  mat-card-subtitle {
+    font-size: 18px;
+  }
+  
+  mat-card-content {
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  }
+  
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}
