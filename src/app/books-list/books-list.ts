@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { debounceTime, Observable, Subject } from 'rxjs';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { Book } from '../book';
 import { Library } from '../library';
 import { AsyncPipe } from '@angular/common';
@@ -25,8 +25,9 @@ import { MatInputModule, MatLabel } from '@angular/material/input';
 })
 export class BooksList implements OnInit, OnDestroy {
   search = new FormControl(null);
-  destroy$ = new Subject<void>();
   books$: Observable<Book[]>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(private libraryService: Library) {
     this.books$ = this.libraryService.books$;
@@ -36,7 +37,7 @@ export class BooksList implements OnInit, OnDestroy {
     this.libraryService.reload$.next();
 
     this.search.valueChanges
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((v) => this.libraryService.search$.next(v));
   }
 
