@@ -5,12 +5,10 @@ import {
   combineLatest,
   map,
   Observable,
-  share,
   shareReplay,
   startWith,
   Subject,
   switchMap,
-  tap,
 } from 'rxjs';
 import { Book } from './book';
 
@@ -24,7 +22,10 @@ export class Library {
 
   search$ = new BehaviorSubject<string | null>(null);
 
-  books$ = combineLatest([this.reload$.pipe(startWith(null)), this.search$.pipe(startWith(''))]).pipe(
+  books$ = combineLatest([
+    this.reload$.pipe(startWith(null)),
+    this.search$.pipe(startWith('')),
+  ]).pipe(
     switchMap(() => this.getBooks()),
     map((books) => {
       return books.filter((b) =>

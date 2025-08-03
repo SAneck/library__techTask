@@ -1,19 +1,19 @@
- :host {
+:host {
   width: 600px;
- }
+}
 
- .simple-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 20px;
-    }
-    
-    mat-form-field {
-      width: 100%;
-    }
-    
-    .submit-button {
-      margin-top: 10px;
-      align-self: flex-end;
-    }
+.simple-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.submit-button {
+  margin-top: 10px;
+  align-self: flex-end;
+}

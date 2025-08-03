@@ -1,12 +1,12 @@
 .container {
-    display: flex;
+  display: flex;
 }
 app-books-list {
-    width:400px;
+  width: 400px;
 }
 .books {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 20px;
 }

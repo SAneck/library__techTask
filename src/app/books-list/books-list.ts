@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { debounceTime, Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { debounceTime, Observable, Subject } from 'rxjs';
 import { Book } from '../book';
 import { Library } from '../library';
 import { AsyncPipe } from '@angular/common';
@@ -23,9 +23,9 @@ import { MatInputModule, MatLabel } from '@angular/material/input';
   templateUrl: './books-list.html',
   styleUrl: './books-list.scss',
 })
-export class BooksList implements OnInit {
+export class BooksList implements OnInit, OnDestroy {
   search = new FormControl(null);
-
+  destroy$ = new Subject<void>();
   books$: Observable<Book[]>;
 
   constructor(private libraryService: Library) {
@@ -38,5 +38,10 @@ export class BooksList implements OnInit {
     this.search.valueChanges
       .pipe(debounceTime(500))
       .subscribe((v) => this.libraryService.search$.next(v));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
