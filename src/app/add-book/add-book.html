@@ -10,17 +10,22 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
+    <mat-label>Ссылка на обложку</mat-label>
+    <input matInput formControlName="image" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
     <mat-label>Описание</mat-label>
     <textarea matInput formControlName="description" rows="3"></textarea>
   </mat-form-field>
 
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    class="submit-button"
-    [disabled]="form.invalid"
-  >
+  <mat-form-field appearance="outline">
+    <mat-label>Добавить свою обложку</mat-label>
+    <input hidden matInput type="file" id="uploadImage" accept="image/*" style="display: none">
+  </mat-form-field>
+
+
+  <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="form.invalid">
     Добавить
   </button>
 </form>

@@ -1,12 +1,23 @@
 @if (bookInfo$ | async; as bookInfo) {
 <mat-card class="book-card">
-  <mat-card-header>
-    <mat-card-title>{{ bookInfo.title }}</mat-card-title>
-    <mat-card-subtitle>{{ bookInfo.author }}</mat-card-subtitle>
-  </mat-card-header>
+  <div class="book-content">
+    <div class="image-container">
+      <img [src]="bookInfo.image" [alt]="bookInfo.title">
+    </div>
+    
+    <div class="text-content">
+      <mat-card-header>
+        <mat-card-title>{{ bookInfo.title }}</mat-card-title>
+        <mat-card-subtitle>{{ bookInfo.author }}</mat-card-subtitle>
+      </mat-card-header>
 
-  <mat-card-content>
-    <p>{{ bookInfo.description }}</p>
-  </mat-card-content>
+      <mat-card-content>
+        <p>{{ bookInfo.description }}</p>
+      </mat-card-content>
+
+      <app-reviews [book]="bookInfo"></app-reviews>
+
+    </div>
+  </div>
 </mat-card>
 }

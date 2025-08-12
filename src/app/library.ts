@@ -24,7 +24,7 @@ export class Library {
 
   books$ = combineLatest([
     this.reload$.pipe(startWith(null)),
-    this.search$.pipe(startWith('')),
+    this.search$.pipe(startWith('1')),
   ]).pipe(
     switchMap(() => this.getBooks()),
     map((books) => {
@@ -44,4 +44,8 @@ export class Library {
   addBook(book: Book): Observable<Book> {
     return this.http.post<Book>(this.apiUrl, book);
   }
+
+editRating(bookId: string, rating: number): Observable<Book> {
+  return this.http.patch<Book>(`${this.apiUrl}/${bookId}`, { rating });
+}
 }

@@ -6,10 +6,11 @@ import { Library } from '../library';
 import { AsyncPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Reviews } from "../reviews/reviews";
 
 @Component({
   selector: 'app-book-info',
-  imports: [AsyncPipe, MatCardModule, MatButtonModule],
+  imports: [AsyncPipe, MatCardModule, MatButtonModule, Reviews],
   templateUrl: './book-info.html',
   styleUrl: './book-info.scss',
 })
@@ -28,4 +29,5 @@ export class BookInfo {
       })
     );
   }
+  
 }

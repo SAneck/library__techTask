@@ -41,6 +41,7 @@ export class AddBook implements OnDestroy {
       author: [null, Validators.required],
       description: [null, Validators.required],
       title: [null, Validators.required],
+      image: [null, [Validators.pattern('https?://.+')]]
     });
   }
 
