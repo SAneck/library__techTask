@@ -17,3 +17,59 @@ mat-form-field {
   margin-top: 10px;
   align-self: flex-end;
 }
+
+.image-upload-container {
+  display: flex;
+  align-items: start;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .image-url-field {
+    flex: 1;
+    min-width: 300px;
+
+    mat-icon[matSuffix] {
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+
+  .upload-button {
+    margin-top: 4px; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 56px; 
+
+    mat-icon {
+      margin-right: 4px;
+    }
+  }
+}
+
+.image-preview-container {
+  position: relative;
+  margin-top: 16px;
+  max-width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .preview-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .remove-image-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+
+    &:hover {
+      background-color: rgba(255, 0, 0, 0.8);
+      color: white;
+    }
+  }
+}

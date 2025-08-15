@@ -5,4 +5,5 @@ export interface Book {
   description: string;
   image: string
   rating: number
+  isEditing: boolean
 }

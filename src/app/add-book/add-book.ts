@@ -1,18 +1,27 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  ValidatorFn,
+  AbstractControl,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Library } from '../library';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
+
+export function imageValidator(previewExists: boolean): ValidatorFn {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+    return previewExists || control.value ? null : { required: true };
+  };
+}
 
 @Component({
   selector: 'app-add-book',
@@ -23,6 +32,7 @@ import { Router } from '@angular/router';
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
+    MatIcon
   ],
   standalone: true,
   templateUrl: './add-book.html',
@@ -31,6 +41,9 @@ import { Router } from '@angular/router';
 export class AddBook implements OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
+  previewImage: string | ArrayBuffer | null = null;
+
+  @ViewChild('imageUrlField') imageUrlField: HTMLInputElement | null = null
 
   constructor(
     private fb: FormBuilder,
@@ -38,25 +51,53 @@ export class AddBook implements OnDestroy {
     private router: Router
   ) {
     this.form = this.fb.group({
-      author: [null, Validators.required],
-      description: [null, Validators.required],
-      title: [null, Validators.required],
-      image: [null, [Validators.pattern('https?://.+')]]
-    });
+      author: ['', Validators.required],
+      description: ['', Validators.required],
+      title: ['', Validators.required],
+      image: ['', [Validators.required,imageValidator(!!this.previewImage)]]
+    })
+    
   }
 
   onSubmit() {
-    this.libraryService
-      .addBook(this.form.value)
-      .pipe(take(1), takeUntil(this.destroy$))
+    const formData = {
+      ...this.form.value,
+      image: this.previewImage || this.form.value.image
+    };
+
+    this.libraryService.addBook(formData)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(({ id }) => {
         this.libraryService.reload$.next();
         this.router.navigate([id]);
       });
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      if (e.target?.result) {
+        this.previewImage = e.target.result;
+        this.form.get('image')?.reset();
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  clearPreview() {
+    this.previewImage = null;
+    if (this.imageUrlField) this.imageUrlField.value = '';
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
 }

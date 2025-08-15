@@ -1,31 +1,54 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="simple-form">
-  <mat-form-field appearance="outline">
-    <mat-label>Имя автора</mat-label>
-    <input matInput formControlName="author" />
-  </mat-form-field>
-
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="outline">
     <mat-label>Название книги</mat-label>
-    <input matInput formControlName="title" />
+    <input matInput formControlName="title" required>
+    <mat-error *ngIf="form.get('title')?.hasError('required')">
+      Обязательное поле
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Ссылка на обложку</mat-label>
-    <input matInput formControlName="image" />
+    <mat-label>Автор</mat-label>
+    <input matInput formControlName="author" required>
+    <mat-error *ngIf="form.get('author')?.hasError('required')">
+      Обязательное поле
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Описание</mat-label>
-    <textarea matInput formControlName="description" rows="3"></textarea>
+    <textarea matInput formControlName="description" required></textarea>
+    <mat-error *ngIf="form.get('description')?.hasError('required')">
+      Обязательное поле
+    </mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Добавить свою обложку</mat-label>
-    <input hidden matInput type="file" id="uploadImage" accept="image/*" style="display: none">
-  </mat-form-field>
 
+  <div class="image-upload-container">
+    <mat-form-field appearance="outline" class="image-url-field" #imageUrlField>
+      <mat-label>Ссылка на обложку</mat-label>
+      <input matInput formControlName="image" placeholder="https://example.com/image.jpg">
+      <mat-error *ngIf="form.get('image')?.hasError('required')">
+        Укажите ссылку или загрузите изображение
+      </mat-error>
+    </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="form.invalid">
-    Добавить
+    <button type="button" mat-raised-button color="primary" (click)="fileInput.click()" class="upload-button">
+      <mat-icon>cloud_upload</mat-icon>
+      <span>Загрузить обложку</span>
+    </button>
+
+    <input hidden [accept]="'image/*'" (change)="onFileSelected($event)" #fileInput type="file" id="file" accept="image/*">
+  </div>
+
+  <div *ngIf="previewImage" class="image-preview-container">
+    <img [src]="previewImage" alt="Предпросмотр обложки" class="preview-image">
+    <button type="button" mat-mini-fab color="warn" (click)="clearPreview()" class="remove-image-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
+    Добавить книгу
   </button>
 </form>

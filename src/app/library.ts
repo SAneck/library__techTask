@@ -9,6 +9,7 @@ import {
   startWith,
   Subject,
   switchMap,
+  tap,
 } from 'rxjs';
 import { Book } from './book';
 
@@ -19,8 +20,9 @@ export class Library {
   private apiUrl = 'http://localhost:3000/books';
 
   reload$ = new Subject<void>();
-
   search$ = new BehaviorSubject<string | null>(null);
+  editingBookId = new BehaviorSubject<string | null>(null)
+
 
   books$ = combineLatest([
     this.reload$.pipe(startWith(null)),
@@ -35,7 +37,7 @@ export class Library {
     shareReplay(1)
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
@@ -45,7 +47,22 @@ export class Library {
     return this.http.post<Book>(this.apiUrl, book);
   }
 
-editRating(bookId: string, rating: number): Observable<Book> {
-  return this.http.patch<Book>(`${this.apiUrl}/${bookId}`, { rating });
-}
+  editRating(bookId: string, rating: number): Observable<Book> {
+    return this.http.patch<Book>(`${this.apiUrl}/${bookId}`, { rating });
+  }
+
+  editBook(i: number) {
+    this.books$.pipe(
+      map((item) => item.map((item, itemIndex) => {
+        if (i === itemIndex) {
+          return {
+            ...item,
+            isEditing: true
+          }
+        } else {
+          return item
+        }
+      }))
+    ).subscribe(console.log)
+  }
 }

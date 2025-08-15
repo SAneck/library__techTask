@@ -3,19 +3,21 @@ import { Book } from '../book';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { Library } from '../library';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Reviews } from "../reviews/reviews";
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-book-info',
-  imports: [AsyncPipe, MatCardModule, MatButtonModule, Reviews],
+  imports: [AsyncPipe, MatCardModule, MatButtonModule, Reviews, MatIconModule, FormsModule, NgIf],
   templateUrl: './book-info.html',
   styleUrl: './book-info.scss',
 })
 export class BookInfo {
-  bookInfo$: Observable<Book>;
+  bookInfo$: Observable<Book & { isEditing: boolean } | null>
 
   constructor(private libraryService: Library, private route: ActivatedRoute) {
     this.bookInfo$ = this.route.params.pipe(
@@ -30,4 +32,9 @@ export class BookInfo {
     );
   }
   
+  edit(i: any){
+    Number(i)
+    this.libraryService.editBook(i)
+  }
+
 }
