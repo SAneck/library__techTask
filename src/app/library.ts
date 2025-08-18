@@ -26,14 +26,23 @@ export class Library {
 
   books$ = combineLatest([
     this.reload$.pipe(startWith(null)),
-    this.search$.pipe(startWith('1')),
+    this.search$.pipe(startWith('')),
+    this.editingBookId.pipe(startWith(null)),
   ]).pipe(
-    switchMap(() => this.getBooks()),
-    map((books) => {
-      return books.filter((b) =>
-        b.title.toLowerCase().includes(this.search$.value?.toLowerCase() || '')
-      );
-    }),
+    switchMap(([_, search, editingId]) =>
+      this.getBooks().pipe(
+        map((books: Book[]) =>
+          books
+            .filter((b) =>
+              b.title.toLowerCase().includes(search?.toLowerCase() || '')
+            )
+            .map((b) => ({
+              ...b,
+              isEditing: b.id === editingId,
+            }))
+        )
+      )
+    ),
     shareReplay(1)
   );
 
@@ -51,18 +60,20 @@ export class Library {
     return this.http.patch<Book>(`${this.apiUrl}/${bookId}`, { rating });
   }
 
-  editBook(i: number) {
-    this.books$.pipe(
-      map((item) => item.map((item, itemIndex) => {
-        if (i === itemIndex) {
-          return {
-            ...item,
-            isEditing: true
-          }
-        } else {
-          return item
-        }
-      }))
-    ).subscribe(console.log)
+  editBook(id: string) {
+    const currentId = this.editingBookId.value;
+    if (currentId === id) {
+      this.editingBookId.next(null);
+    } else {
+      this.editingBookId.next(id);
+    }
   }
+  updateBook(book: Book): Observable<Book> {
+    return this.http.patch<Book>(`${this.apiUrl}/${book.id}`, book);
+  }
+
+  deleteBook(id: string){
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
 }

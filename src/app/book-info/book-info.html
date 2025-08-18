@@ -1,64 +1,57 @@
 @if (bookInfo$ | async; as bookInfo) {
-  <mat-card class="book-card">
-    <div class="book-content">
-      <div class="image-container">
-        <ng-container *ngIf="bookInfo.isEditing; else imageView">
-          <input
-            type="text"
-            [(ngModel)]="bookInfo.image"
-            placeholder="URL изображения"
-            class="image-input"
-          />
-        </ng-container>
-        <ng-template #imageView>
-          <img [src]="bookInfo.image" [alt]="bookInfo.title">
-        </ng-template>
-      </div>
-
-      <div class="text-content">
-        <mat-card-header>
-          <mat-card-title>
-            <ng-container *ngIf="bookInfo.isEditing; else titleView">
-              <input
-                type="text"
-                [(ngModel)]="bookInfo.title"
-                placeholder="Название"
-              />
-            </ng-container>
-            <ng-template #titleView>{{ bookInfo.title }}</ng-template>
-          </mat-card-title>
-
-          <mat-card-subtitle>
-            <ng-container *ngIf="bookInfo.isEditing; else authorView">
-              <input
-                type="text"
-                [(ngModel)]="bookInfo.author"
-                placeholder="Автор"
-              />
-            </ng-container>
-            <ng-template #authorView>{{ bookInfo.author }}</ng-template>
-          </mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content>
-          <ng-container *ngIf="bookInfo.isEditing; else descriptionView">
-            <textarea
-              rows="4"
-              [(ngModel)]="bookInfo.description"
-              placeholder="Описание"
-            ></textarea>
-          </ng-container>
-          <ng-template #descriptionView>
-            <p>{{ bookInfo.description }}</p>
-          </ng-template>
-        </mat-card-content>
-
-        <app-reviews [book]="bookInfo"></app-reviews>
-      </div>
+<mat-card class="book-card">
+  <div class="book-content">
+    <div class="image-container">
+      <ng-container *ngIf="bookInfo.isEditing; else imageView">
+        <input type="text" [(ngModel)]="bookInfo.image" placeholder="URL изображения" class="image-input" />
+      </ng-container>
+      <ng-template #imageView>
+        <img [src]="bookInfo.image" [alt]="bookInfo.title">
+      </ng-template>
     </div>
 
-    <button type="button" (click)="edit(bookInfo.id)">
+    <div class="text-content">
+      <mat-card-header>
+        <mat-card-title>
+          <ng-container *ngIf="bookInfo.isEditing; else titleView">
+            <input type="text" [(ngModel)]="bookInfo.title" placeholder="Название" />
+          </ng-container>
+          <ng-template #titleView>{{ bookInfo.title }}</ng-template>
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          <ng-container *ngIf="bookInfo.isEditing; else authorView">
+            <input type="text" [(ngModel)]="bookInfo.author" placeholder="Автор" />
+          </ng-container>
+          <ng-template #authorView>{{ bookInfo.author }}</ng-template>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <ng-container *ngIf="bookInfo.isEditing; else descriptionView">
+          <textarea rows="4" [(ngModel)]="bookInfo.description" placeholder="Описание"></textarea>
+        </ng-container>
+        <ng-template #descriptionView>
+          <p>{{ bookInfo.description }}</p>
+        </ng-template>
+      </mat-card-content>
+
+      <app-reviews [book]="bookInfo"></app-reviews>
+    </div>
+  </div>
+
+  <div class="container__btns">
+    <button type="button" (click)="edit(bookInfo)">
       <mat-icon>{{ bookInfo.isEditing ? 'save' : 'edit' }}</mat-icon>
     </button>
-  </mat-card>
+    <button type="button" class="delete__btn" (click)="deleteBook(bookInfo.id!)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+</mat-card>
+
+<button matButton (click)="openDialog()">Open dialog</button>
+
+
 }

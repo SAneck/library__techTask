@@ -12,7 +12,7 @@
     .image-container {
       flex: 0 0 300px;
       position: relative;
-      
+
       img {
         width: 100%;
         max-height: 400px;
@@ -27,8 +27,21 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      height: 100%;  // Чтобы растянуть на всю высоту
+      height: 100%;
     }
+  }
+
+  .container__btns {
+    display: flex;
+    gap: 20px;
+    align-self: flex-end;
+  }
+
+  .delete__btn {
+    background-color: #ff033e;
+  }
+  .delete__btn:hover{
+    background-color: #e61919;
   }
 
   mat-card-header {
@@ -55,17 +68,83 @@
   }
 
   app-reviews {
-    margin-top: auto;  // Прижимаем к низу
-    align-self: flex-end;  // Выравниваем по правому краю
-    margin-right: 16px;  // Отступ от правого края
+    margin-top: auto;
+    align-self: flex-end;
+    margin-right: 16px;
   }
 }
+
+.book-card {
+  padding: 20px;
+  margin: 20px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.book-content {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.image-container {
+  flex: 0 0 200px;
+}
+
+.image-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.text-content {
+  flex: 1;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+  outline: none;
+  background-color: white;
+}
+
+button {
+  margin-top: 10px;
+  align-self: flex-end;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #303f9f;
+}
+
 
 @media (max-width: 768px) {
   .book-card {
     .book-content {
       flex-direction: column;
-      
+
       .image-container {
         width: 100%;
         margin-bottom: 20px;
@@ -73,7 +152,7 @@
     }
 
     app-reviews {
-      align-self: flex-start;  // На мобильных — слева
+      align-self: flex-start;
       margin-right: 0;
     }
   }

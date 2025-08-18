@@ -17,7 +17,9 @@ mat-form-field {
   margin-top: 10px;
   align-self: flex-end;
 }
-
+.delete__btn{
+  background-color: red;
+}
 .image-upload-container {
   display: flex;
   align-items: start;

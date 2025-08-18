@@ -17,9 +17,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 
-export function imageValidator(previewExists: boolean): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: any} | null => {
-    return previewExists || control.value ? null : { required: true };
+export function imageValidator(component: AddBook): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    return component.previewImage || control.value ? null : { required: true };
   };
 }
 
@@ -32,7 +32,8 @@ export function imageValidator(previewExists: boolean): ValidatorFn {
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
-    MatIcon
+    MatIcon, 
+    NgIf
   ],
   standalone: true,
   templateUrl: './add-book.html',
@@ -54,12 +55,13 @@ export class AddBook implements OnDestroy {
       author: ['', Validators.required],
       description: ['', Validators.required],
       title: ['', Validators.required],
-      image: ['', [Validators.required,imageValidator(!!this.previewImage)]]
-    })
-    
+      image: ['', [imageValidator(this)]]
+    });
   }
 
   onSubmit() {
+    if (this.form.invalid) return;
+
     const formData = {
       ...this.form.value,
       image: this.previewImage || this.form.value.image
@@ -75,29 +77,30 @@ export class AddBook implements OnDestroy {
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    
+
     if (!input.files?.length) return;
 
     const file = input.files[0];
-
     const reader = new FileReader();
+
     reader.onload = (e: ProgressEvent<FileReader>) => {
       if (e.target?.result) {
         this.previewImage = e.target.result;
-        this.form.get('image')?.reset();
+        this.form.get('image')?.updateValueAndValidity();
       }
     };
+
     reader.readAsDataURL(file);
   }
 
   clearPreview() {
     this.previewImage = null;
-    if (this.imageUrlField) this.imageUrlField.value = '';
+    this.form.get('image')?.setValue('');
+    this.form.get('image')?.updateValueAndValidity();
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

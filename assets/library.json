@@ -3,11 +3,11 @@
     {
       "id": "1",
       "title": "Война и мир",
-      "author": "Лев Толстой",
-      "description": "Роман-эпопея, описывающий русское общество в эпоху войн против Наполеона.",
+      "author": "Лил морти",
+      "description": "Роман-эпопея, описывающий русское общество в эпоху войн против Наполеона и не только.",
       "image": "https://i.pinimg.com/736x/d7/b6/16/d7b6167696fbd4b4e9711bec78dbc9aa.jpg",
       "rating": 5,
-      "isEditing": false
+      "isEditing": true
     },
     {
       "id": "2",
@@ -15,7 +15,7 @@
       "author": "Фёдор Достоевский",
       "description": "Роман о нравственных последствиях преступления.",
       "image": "https://i.pinimg.com/736x/12/15/e0/1215e0143787d7e25155d98c9329eb3b.jpg",
-      "rating": 5,
+      "rating": 2,
       "isEditing": false
     },
     {

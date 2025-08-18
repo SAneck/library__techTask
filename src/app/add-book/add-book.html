@@ -38,7 +38,8 @@
       <span>Загрузить обложку</span>
     </button>
 
-    <input hidden [accept]="'image/*'" (change)="onFileSelected($event)" #fileInput type="file" id="file" accept="image/*">
+    <input hidden [accept]="'image/*'" (change)="onFileSelected($event)" #fileInput type="file" id="file"
+      accept="image/*">
   </div>
 
   <div *ngIf="previewImage" class="image-preview-container">
